@@ -31,6 +31,7 @@ const formSchema = z.object({
   phone: z.string().refine((n) => parsePhoneNumber(n).valid, {
     message: "Please enter a valid phone number",
   }),
+  email: z.string().email({ message: "Please enter a valid email" }),
 });
 
 export function HiringForm() {
@@ -39,6 +40,7 @@ export function HiringForm() {
     defaultValues: {
       name: "",
       phone: "",
+      email: "",
     },
   });
 
@@ -71,20 +73,34 @@ export function HiringForm() {
                 </FormItem>
               )}
             />
-            <div>
+            <div className="flex gap-4">
               <FormField
                 control={form.control}
                 name="phone"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="grow">
                     <FormLabel className="sr-only">Phone</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Phone"
-                        type="number"
+                        type="tel"
                         className="remove-number-arrows"
                         {...field}
                       />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="grow">
+                    <FormLabel className="sr-only">Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Email" type="email" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -97,7 +113,7 @@ export function HiringForm() {
       <CardFooter>
         <Button
           onClick={form.handleSubmit(onSubmit)}
-          className="w-full bg-indigo-600"
+          className="grow bg-indigo-600"
           type="submit"
         >
           Submit
