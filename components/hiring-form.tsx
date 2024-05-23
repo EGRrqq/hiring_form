@@ -22,10 +22,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { parsePhoneNumber } from "awesome-phonenumber";
 
 const formSchema = z.object({
   name: z.string().min(1, {
     message: "Please enter your name",
+  }),
+  phone: z.string().refine((n) => parsePhoneNumber(n).valid, {
+    message: "Please enter a valid phone number",
   }),
 });
 
@@ -34,6 +38,7 @@ export function HiringForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      phone: "",
     },
   });
 
@@ -66,6 +71,21 @@ export function HiringForm() {
                 </FormItem>
               )}
             />
+            <div>
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="sr-only">Phone</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Phone" type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </form>
         </Form>
       </CardContent>
