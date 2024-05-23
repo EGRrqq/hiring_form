@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { parsePhoneNumber } from "awesome-phonenumber";
+import { Checkbox } from "./ui/checkbox";
 
 const skillValues = ["Junior", "Middle", "Senior", "Lead", "CTO"] as const;
 
@@ -44,6 +45,9 @@ const formSchema = z.object({
   skill: z.enum(skillValues, {
     message: "Please select your skill",
   }),
+  agreement: z.boolean().refine((f) => f, {
+    message: "Please agree to our data collection",
+  }),
 });
 
 export function HiringForm() {
@@ -54,6 +58,7 @@ export function HiringForm() {
       phone: "",
       email: "",
       skill: undefined,
+      agreement: false,
     },
   });
 
@@ -145,6 +150,29 @@ export function HiringForm() {
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="agreement"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex flex-inline items-start space-x-3 space-y-0 ">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <span className="space-y-1 leading-none">
+                      <FormLabel className="text-default-color">
+                        I’m agree with every data you collect
+                      </FormLabel>
+                    </span>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
