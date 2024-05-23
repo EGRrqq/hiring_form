@@ -79,7 +79,12 @@ export function HiringForm() {
                   <FormItem>
                     <FormLabel className="sr-only">Phone</FormLabel>
                     <FormControl>
-                      <Input placeholder="Phone" type="number" {...field} />
+                      <Input
+                        placeholder="Phone"
+                        type="number"
+                        className="remove-number-arrows"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
