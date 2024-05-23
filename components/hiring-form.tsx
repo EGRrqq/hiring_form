@@ -168,12 +168,12 @@ export function HiringForm() {
                       />
                     </FormControl>
                     <span className="space-y-1 leading-none">
-                      <FormLabel className="text-default-color">
+                      <FormLabel>
                         I’m agree with every data you collect
                       </FormLabel>
                     </span>
                   </div>
-                  <FormMessage />
+                  <FormMessage className="sr-only" />
                 </FormItem>
               )}
             />
