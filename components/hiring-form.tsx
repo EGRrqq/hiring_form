@@ -21,8 +21,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { parsePhoneNumber } from "awesome-phonenumber";
+
+const skillValues = ["Junior", "Middle", "Senior", "Lead", "CTO"] as const;
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -32,6 +41,9 @@ const formSchema = z.object({
     message: "Please enter a valid phone number",
   }),
   email: z.string().email({ message: "Please enter a valid email" }),
+  skill: z.enum(skillValues, {
+    message: "Please select your skill",
+  }),
 });
 
 export function HiringForm() {
@@ -41,6 +53,7 @@ export function HiringForm() {
       name: "",
       phone: "",
       email: "",
+      skill: undefined,
     },
   });
 
@@ -107,6 +120,35 @@ export function HiringForm() {
                 )}
               />
             </div>
+
+            <FormField
+              control={form.control}
+              name="skill"
+              render={({ field }) => (
+                <FormItem className="grow">
+                  <FormLabel className="sr-only">Your Skill</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Your Skill" />
+                      </SelectTrigger>
+                    </FormControl>
+
+                    <SelectContent>
+                      {skillValues.map((s) => (
+                        <SelectItem key={s} value={s}>
+                          {s}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </form>
         </Form>
       </CardContent>
