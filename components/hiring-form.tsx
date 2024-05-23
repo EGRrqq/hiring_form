@@ -68,7 +68,7 @@ export function HiringForm() {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="gap-3.5">
         <CardTitle>Drop us a line</CardTitle>
         <CardDescription>
           Our documentary campaigns feature leading figures, organisations and
@@ -81,11 +81,15 @@ export function HiringForm() {
             <FormField
               control={form.control}
               name="name"
-              render={({ field }) => (
+              render={({ field, fieldState: { error } }) => (
                 <FormItem>
                   <FormLabel className="sr-only">Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Name" {...field} />
+                    <Input
+                      placeholder="Name"
+                      className="rounded-2xl"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -102,7 +106,7 @@ export function HiringForm() {
                       <Input
                         placeholder="Phone"
                         type="tel"
-                        className="remove-number-arrows"
+                        className="remove-number-arrows rounded-2xl"
                         {...field}
                       />
                     </FormControl>
@@ -118,7 +122,12 @@ export function HiringForm() {
                   <FormItem className="grow">
                     <FormLabel className="sr-only">Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="Email" type="email" {...field} />
+                      <Input
+                        placeholder="Email"
+                        type="email"
+                        className="rounded-2xl"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -137,14 +146,18 @@ export function HiringForm() {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="rounded-2xl">
                         <SelectValue placeholder="Your Skill" />
                       </SelectTrigger>
                     </FormControl>
 
-                    <SelectContent>
+                    <SelectContent className="rounded-2xl">
                       {skillValues.map((s) => (
-                        <SelectItem key={s} value={s}>
+                        <SelectItem
+                          key={s}
+                          value={s}
+                          className="cursor-pointer"
+                        >
                           {s}
                         </SelectItem>
                       ))}
@@ -183,7 +196,7 @@ export function HiringForm() {
       <CardFooter>
         <Button
           onClick={form.handleSubmit(onSubmit)}
-          className="grow bg-indigo-600"
+          className="grow bg-indigo-600 hover:bg-indigo-500 rounded-2xl"
           type="submit"
         >
           Submit
