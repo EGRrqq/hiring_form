@@ -13,6 +13,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
@@ -34,27 +42,43 @@ export function HiringForm() {
   }
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="border-solid border-2 border-border p-8 flex flex-col space-y-8"
-      >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="sr-only">Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+    <Card>
+      <CardHeader>
+        <CardTitle>Drop us a line</CardTitle>
+        <CardDescription>
+          Our documentary campaigns feature leading figures, organisations and
+          leaders, in open and candid discussions.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="sr-only">Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
+      </CardContent>
+      <CardFooter>
+        <Button
+          onClick={form.handleSubmit(onSubmit)}
+          className="w-full bg-indigo-600"
+          type="submit"
+        >
+          Submit
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }
 
