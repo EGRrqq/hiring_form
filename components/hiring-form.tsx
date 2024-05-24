@@ -87,7 +87,13 @@ export function HiringForm() {
                   <FormControl>
                     <Input
                       placeholder="Name"
-                      className="rounded-2xl bg-gray-200"
+                      className={`rounded-2xl bg-gray-200 ring-inset focus:ring-indigo-600 focus-visible:ring-indigo-600 
+                       ${
+                         error
+                           ? "outline outline-destructive focus-visible:ring-destructive "
+                           : ""
+                       }
+                     `}
                       {...field}
                     />
                   </FormControl>
@@ -99,14 +105,20 @@ export function HiringForm() {
               <FormField
                 control={form.control}
                 name="phone"
-                render={({ field }) => (
+                render={({ field, fieldState: { error } }) => (
                   <FormItem className="grow">
                     <FormLabel className="sr-only">Phone</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Phone"
                         type="tel"
-                        className="remove-number-arrows rounded-2xl bg-gray-200"
+                        className={`remove-number-arrows rounded-2xl bg-gray-200 ring-inset focus:ring-indigo-600 focus-visible:ring-indigo-600 
+                       ${
+                         error
+                           ? "outline outline-destructive focus-visible:ring-destructive "
+                           : ""
+                       }
+                      `}
                         {...field}
                       />
                     </FormControl>
@@ -118,14 +130,20 @@ export function HiringForm() {
               <FormField
                 control={form.control}
                 name="email"
-                render={({ field }) => (
+                render={({ field, fieldState: { error } }) => (
                   <FormItem className="grow">
                     <FormLabel className="sr-only">Email</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Email"
                         type="email"
-                        className="rounded-2xl bg-gray-200"
+                        className={`rounded-2xl bg-gray-200 ring-inset focus:ring-indigo-600 focus-visible:ring-indigo-600 
+                       ${
+                         error
+                           ? "outline outline-destructive focus-visible:ring-destructive "
+                           : ""
+                       }
+                     `}
                         {...field}
                       />
                     </FormControl>
@@ -138,7 +156,7 @@ export function HiringForm() {
             <FormField
               control={form.control}
               name="skill"
-              render={({ field }) => (
+              render={({ field, fieldState: { error } }) => (
                 <FormItem className="grow">
                   <FormLabel className="sr-only">Your Skill</FormLabel>
                   <Select
@@ -146,7 +164,15 @@ export function HiringForm() {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="rounded-2xl bg-gray-200">
+                      <SelectTrigger
+                        className={`rounded-2xl bg-gray-200 ring-inset focus:ring-indigo-600 focus-visible:ring-indigo-600 
+                       ${
+                         error
+                           ? "outline outline-destructive focus-visible:ring-destructive "
+                           : ""
+                       }
+                     `}
+                      >
                         <SelectValue placeholder="Your Skill" />
                       </SelectTrigger>
                     </FormControl>
@@ -171,13 +197,18 @@ export function HiringForm() {
             <FormField
               control={form.control}
               name="agreement"
-              render={({ field }) => (
+              render={({ field, fieldState: { error } }) => (
                 <FormItem>
                   <div className="flex flex-inline items-start space-x-3 space-y-0 ">
                     <FormControl>
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
+                        className={`border-0 outline outline-gray-200 data-[state=checked]:bg-transparent data-[state=checked]:text-indigo-600 focus:ring-indigo-600 focus-visible:ring-indigo-600 ${
+                          error
+                            ? "outline-destructive"
+                            : "data-[state=checked]:outline-indigo-600"
+                        }`}
                       />
                     </FormControl>
                     <span className="space-y-1 leading-none">
@@ -196,7 +227,7 @@ export function HiringForm() {
       <CardFooter>
         <Button
           onClick={form.handleSubmit(onSubmit)}
-          className="grow bg-indigo-600 hover:bg-indigo-500 rounded-2xl"
+          className="grow bg-indigo-600 hover:bg-indigo-500 rounded-2xl focus:ring-indigo-600 focus-visible:ring-indigo-600 focus:hover:ring-indigo-500 focus-visible:hover:ring-indigo-500 "
           type="submit"
         >
           Submit
