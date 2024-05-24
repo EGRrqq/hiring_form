@@ -122,12 +122,12 @@ export function HiringForm() {
                 </FormItem>
               )}
             />
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 [&>*]:grow">
               <FormField
                 control={form.control}
                 name="phone"
                 render={({ field, fieldState: { error } }) => (
-                  <FormItem className="grow">
+                  <FormItem>
                     <FormLabel className="sr-only">Phone</FormLabel>
                     <FormControl>
                       <Input
@@ -152,7 +152,7 @@ export function HiringForm() {
                 control={form.control}
                 name="email"
                 render={({ field, fieldState: { error } }) => (
-                  <FormItem className="grow">
+                  <FormItem>
                     <FormLabel className="sr-only">Email</FormLabel>
                     <FormControl>
                       <Input
