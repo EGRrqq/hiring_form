@@ -77,7 +77,10 @@ export function HiringForm() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-4"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -101,7 +104,7 @@ export function HiringForm() {
                 </FormItem>
               )}
             />
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4">
               <FormField
                 control={form.control}
                 name="phone"
@@ -199,7 +202,7 @@ export function HiringForm() {
               name="agreement"
               render={({ field, fieldState: { error } }) => (
                 <FormItem>
-                  <div className="flex flex-inline items-start space-x-3 space-y-0 ">
+                  <div className="flex flex-inline items-start space-x-3 space-y-0 mt-2">
                     <FormControl>
                       <Checkbox
                         checked={field.value}
