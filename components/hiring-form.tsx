@@ -33,6 +33,12 @@ import { parsePhoneNumber } from "awesome-phonenumber";
 import { Checkbox } from "./ui/checkbox";
 
 const skillValues = ["Junior", "Middle", "Senior", "Lead", "CTO"] as const;
+const fileTypes = [
+  "application/pdf",
+  // .docx
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "image/png",
+];
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -45,6 +51,11 @@ const formSchema = z.object({
   skill: z.enum(skillValues, {
     message: "Please select your skill",
   }),
+  resume: z
+    .instanceof(File, { message: "Please select your resume" })
+    .refine((f) => fileTypes.includes(f.type), {
+      message: "Unsupported file format",
+    }),
   agreement: z.boolean().refine((f) => f, {
     message: "Please agree to our data collection",
   }),
@@ -57,6 +68,7 @@ export function HiringForm() {
       name: "",
       phone: "",
       email: "",
+      resume: undefined,
       skill: undefined,
       agreement: false,
     },
@@ -192,6 +204,27 @@ export function HiringForm() {
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="resume"
+              render={({ field: { value, onChange, ...fieldProps } }) => (
+                <FormItem>
+                  <FormLabel>Resume</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...fieldProps}
+                      type="file"
+                      accept={fileTypes.join(",")}
+                      onChange={(event) =>
+                        onChange(event.target.files && event.target.files[0])
+                      }
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
