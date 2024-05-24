@@ -87,7 +87,7 @@ export function HiringForm() {
                   <FormControl>
                     <Input
                       placeholder="Name"
-                      className="rounded-2xl"
+                      className="rounded-2xl bg-gray-200"
                       {...field}
                     />
                   </FormControl>
@@ -106,7 +106,7 @@ export function HiringForm() {
                       <Input
                         placeholder="Phone"
                         type="tel"
-                        className="remove-number-arrows rounded-2xl"
+                        className="remove-number-arrows rounded-2xl bg-gray-200"
                         {...field}
                       />
                     </FormControl>
@@ -125,7 +125,7 @@ export function HiringForm() {
                       <Input
                         placeholder="Email"
                         type="email"
-                        className="rounded-2xl"
+                        className="rounded-2xl bg-gray-200"
                         {...field}
                       />
                     </FormControl>
@@ -146,17 +146,17 @@ export function HiringForm() {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="rounded-2xl">
+                      <SelectTrigger className="rounded-2xl bg-gray-200">
                         <SelectValue placeholder="Your Skill" />
                       </SelectTrigger>
                     </FormControl>
 
-                    <SelectContent className="rounded-2xl">
+                    <SelectContent className="rounded-2xl bg-gray-100">
                       {skillValues.map((s) => (
                         <SelectItem
                           key={s}
                           value={s}
-                          className="cursor-pointer"
+                          className={`cursor-pointer data-[state=checked]:font-bold [&_svg]:hidden px-4 focus:bg-gray-50`}
                         >
                           {s}
                         </SelectItem>
