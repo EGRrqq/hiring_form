@@ -32,8 +32,8 @@ import { Input } from "@/components/ui/input";
 import { parsePhoneNumber } from "awesome-phonenumber";
 import { Checkbox } from "./ui/checkbox";
 
-const skillValues = ["Junior", "Middle", "Senior", "Lead", "CTO"] as const;
-const fileTypes = [
+const SKILL_VALUES = ["Junior", "Middle", "Senior", "Lead", "CTO"] as const;
+const FILE_TYPES = [
   "application/pdf",
   // .docx
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -48,14 +48,20 @@ const formSchema = z.object({
     message: "Please enter a valid phone number",
   }),
   email: z.string().email({ message: "Please enter a valid email" }),
-  skill: z.enum(skillValues, {
+  skill: z.enum(SKILL_VALUES, {
     message: "Please select your skill",
   }),
   resume: z
-    .instanceof(File, { message: "Please select your resume" })
-    .refine((f) => fileTypes.includes(f.type), {
-      message: "Unsupported file format",
-    }),
+    .custom<FileList>(
+      (val) => val instanceof FileList,
+      "Please select your files"
+    )
+    .refine((files) => files.length > 0, "Please select your files")
+    .refine(
+      (files) =>
+        Array.from(files).every((file) => FILE_TYPES.includes(file.type)),
+      "Unsupported file format"
+    ),
   agreement: z.boolean().refine((f) => f, {
     message: "Please agree to our data collection",
   }),
@@ -193,7 +199,7 @@ export function HiringForm() {
                     </FormControl>
 
                     <SelectContent className="rounded-2xl bg-gray-100">
-                      {skillValues.map((s) => (
+                      {SKILL_VALUES.map((s) => (
                         <SelectItem
                           key={s}
                           value={s}
@@ -219,10 +225,29 @@ export function HiringForm() {
                     <Input
                       {...fieldProps}
                       type="file"
-                      accept={fileTypes.join(",")}
-                      onChange={(event) =>
-                        onChange(event.target.files && event.target.files[0])
-                      }
+                      multiple
+                      accept={FILE_TYPES.join(",")}
+                      onChange={(event) => {
+                        // Triggered when user uploaded a new file
+                        // FileList is immutable, so we need to create a new one
+                        const dataTransfer = new DataTransfer();
+
+                        // Add old images
+                        if (value) {
+                          Array.from(value).forEach((image) =>
+                            dataTransfer.items.add(image)
+                          );
+                        }
+
+                        // Add newly uploaded images
+                        Array.from(event.target.files!).forEach((image) =>
+                          dataTransfer.items.add(image)
+                        );
+
+                        // Validate and update uploaded file
+                        const newFiles = dataTransfer.files;
+                        onChange(newFiles);
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
