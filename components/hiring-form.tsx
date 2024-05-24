@@ -214,7 +214,7 @@ export function HiringForm() {
               name="resume"
               render={({ field: { value, onChange, ...fieldProps } }) => (
                 <FormItem>
-                  <FormLabel>Resume</FormLabel>
+                  <FormLabel className="sr-only">Resume</FormLabel>
                   <FormControl>
                     <Input
                       {...fieldProps}
