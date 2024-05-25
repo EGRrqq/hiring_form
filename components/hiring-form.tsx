@@ -276,13 +276,13 @@ export function HiringForm() {
                             <li className="list-none" key={f.id}>
                               <Badge
                                 variant="secondary"
-                                className="flex gap-2 p-1 justify-center items-center w-fit h-fit bg-gray-100"
+                                className="flex gap-2 p-1 justify-center items-center w-fit h-fit bg-gray-100 "
                               >
                                 <FileTextIcon />
                                 <p>{f.name}</p>
                                 <Button
                                   size="icon"
-                                  className="bg-transparent hover:bg-transparent h-fit w-fit text-primary"
+                                  className="bg-transparent hover:bg-transparent h-fit w-fit text-primary focus:ring-indigo-600 focus-visible:ring-indigo-600 "
                                   onClick={() => {
                                     // Triggered when user delete a new file
 
@@ -305,38 +305,42 @@ export function HiringForm() {
                       </ul>
                     </div>
 
-                    <FormControl>
-                      <Input
-                        {...fieldProps}
-                        className="sr-only"
-                        type="file"
-                        multiple
-                        accept={FILE_TYPES.join(",")}
-                        onChange={(e) => {
-                          // Triggered when user uploaded a new file
+                    <div className="relative ">
+                      <FormControl>
+                        <Input
+                          {...fieldProps}
+                          tabIndex={-1}
+                          className={`cursor-pointer [&*]:cursor-pointer h-32 opacity-0`}
+                          type="file"
+                          multiple
+                          accept={FILE_TYPES.join(",")}
+                          onChange={(e) => {
+                            // Triggered when user uploaded a new file
 
-                          // FileList is immutable, so we need to create a new one
-                          const dataTransfer = new DataTransfer();
+                            // FileList is immutable, so we need to create a new one
+                            const dataTransfer = new DataTransfer();
 
-                          // Add old images
-                          if (value) addFiles(dataTransfer, value);
-                          // Add newly uploaded images
-                          addFiles(dataTransfer, e.target.files!);
+                            // Add old images
+                            if (value) addFiles(dataTransfer, value);
+                            // Add newly uploaded images
+                            addFiles(dataTransfer, e.target.files!);
 
-                          sendFiles(dataTransfer);
-                        }}
-                      />
-                    </FormControl>
+                            sendFiles(dataTransfer);
+                          }}
+                        />
+                      </FormControl>
 
-                    <div className="flex flex-col gap-1">
-                      <FormLabel
-                        className={`cursor-pointer rounded-3xl border-2 border-dashed flex justify-center items-center p-8 text-gray-400
+                      <div className="pointer-events-none absolute top-0 w-full flex flex-col gap-1 h-full">
+                        <FormLabel
+                          tabIndex={0}
+                          className={`focus:ring focus:outline-indigo-600 focus:ring-gray-200 cursor-pointer rounded-3xl border-2 border-dashed flex justify-center items-center text-gray-400 h-full
                     ${error ? "border-destructive" : "gray-400"}
                     `}
-                      >
-                        <PlusIcon size="2rem" />
-                      </FormLabel>
-                      <FormMessage />
+                        >
+                          <PlusIcon size="2rem" />
+                        </FormLabel>
+                        <FormMessage />
+                      </div>
                     </div>
                   </FormItem>
                 );
