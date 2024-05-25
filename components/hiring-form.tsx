@@ -226,15 +226,8 @@ export function HiringForm() {
                 field: { value, onChange, ...fieldProps },
                 fieldState: { error },
               }) => {
-                interface IFileWithId extends File {
-                  id: string;
-                }
-
                 // Add image file with id to FileList
-                function addItems(
-                  dataTransfer: DataTransfer,
-                  image: IFileWithId
-                ) {
+                function addItems(dataTransfer: DataTransfer, image: File) {
                   image.id = uuidv4();
                   dataTransfer.items.add(image);
                 }
@@ -273,7 +266,7 @@ export function HiringForm() {
                       <ul className="flex flex-col gap-2">
                         {value &&
                           Array.from(value).map((f) => (
-                            <li className="list-none" key={f.id}>
+                            <li className="list-none" key={f.id || uuidv4()}>
                               <Badge
                                 variant="secondary"
                                 className="flex gap-2 p-1 justify-center items-center w-fit h-fit bg-gray-100 "
@@ -292,7 +285,7 @@ export function HiringForm() {
                                     // Add already existing images
                                     if (value) addFiles(dataTransfer, value);
 
-                                    removeItem(dataTransfer, f.id);
+                                    if (f.id) removeItem(dataTransfer, f.id);
 
                                     sendFiles(dataTransfer);
                                   }}
@@ -310,7 +303,7 @@ export function HiringForm() {
                         <Input
                           {...fieldProps}
                           tabIndex={-1}
-                          className={`cursor-pointer [&*]:cursor-pointer h-32 opacity-0`}
+                          className={`cursor-pointer h-32 opacity-0`}
                           type="file"
                           multiple
                           accept={FILE_TYPES.join(",")}
