@@ -263,7 +263,7 @@ export function HiringForm() {
                         Dokument im PDF-, DOCX-, PNG.
                       </FormDescription>
 
-                      <ul className="flex flex-col gap-2">
+                      <ul className="flex flex-wrap gap-2">
                         {value &&
                           Array.from(value).map((f) => (
                             <li className="list-none" key={f.id || uuidv4()}>
