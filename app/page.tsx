@@ -1,4 +1,4 @@
-import { HiringForm } from "@/components/hiring-form";
+import HiringForm from "@/components/hiring-form";
 
 export default function Home() {
   return (
