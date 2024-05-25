@@ -1,5 +1,6 @@
 "use client";
 
+import { v4 as uuidv4 } from "uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -229,6 +230,13 @@ export function HiringForm() {
                       Klicken Sie auf die Schaltfläche oder ziehen Sie ein
                       Dokument im PDF-, DOCX-, PNG.
                     </FormDescription>
+
+                    <ul>
+                      {value &&
+                        Array.from(value).map((f) => (
+                          <li key={uuidv4()}>{f.name}</li>
+                        ))}
+                    </ul>
                   </div>
 
                   <FormControl>
