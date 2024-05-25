@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -219,8 +220,17 @@ export function HiringForm() {
               control={form.control}
               name="resume"
               render={({ field: { value, onChange, ...fieldProps } }) => (
-                <FormItem>
-                  <FormLabel className="sr-only">Resume</FormLabel>
+                <FormItem className="flex flex-wrap gap-4 [&>*]:flex-1 [&>*]:basis-[48%]">
+                  <div className="flex flex-col gap-3.5 mt-2">
+                    <FormLabel className="text-primary">
+                      Dokument hochladen
+                    </FormLabel>
+                    <FormDescription>
+                      Klicken Sie auf die Schaltfläche oder ziehen Sie ein
+                      Dokument im PDF-, DOCX-, PNG.
+                    </FormDescription>
+                  </div>
+
                   <FormControl>
                     <Input
                       {...fieldProps}
