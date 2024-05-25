@@ -1,20 +1,11 @@
 "use client";
 
-import { v4 as uuidv4 } from "uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import {
   Card,
   CardContent,
@@ -24,10 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { Input } from "@/components/ui/input";
 import { parsePhoneNumber } from "awesome-phonenumber";
-import { Badge } from "../ui/badge";
-import { FileTextIcon, PlusIcon, X } from "lucide-react";
 import { SKILL_VALUES, FILE_TYPES } from "./constants";
 import {
   AgreementField,

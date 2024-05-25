@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { FileTextIcon, PlusIcon, X } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import { FILE_TYPES } from "../constants";
+import { ChangeEvent } from "react";
 
 export const FileField = () => {
   const form = useFormContext();
@@ -25,12 +26,13 @@ export const FileField = () => {
         field: { value, onChange, ...fieldProps },
         fieldState: { error },
       }) => {
-        // Add image file with id to FileList
+        // Add image to FileList
         function addItems(dataTransfer: DataTransfer, image: File) {
           image.id = uuidv4();
           dataTransfer.items.add(image);
         }
 
+        // Remove image from FileList
         function removeItem(dataTransfer: DataTransfer, id: string) {
           const files = dataTransfer.files;
           const filesArr = Array.from(files);
@@ -39,6 +41,7 @@ export const FileField = () => {
           dataTransfer.items.remove(fileIndex);
         }
 
+        // Add images to FileList
         function addFiles(dataTransfer: DataTransfer, files: FileList) {
           Array.from(files).forEach((image) => addItems(dataTransfer, image));
         }
@@ -47,6 +50,36 @@ export const FileField = () => {
         function sendFiles(dataTransfer: DataTransfer) {
           const newFiles = dataTransfer.files;
           onChange(newFiles);
+        }
+
+        // Triggered when user delete a new file
+        function handleFileRemove(file: File) {
+          // FileList is immutable, so we need to create a new one
+          const dataTransfer = new DataTransfer();
+
+          // Add already existing images
+          if (value) addFiles(dataTransfer, value);
+
+          // Remove target file
+          if (file.id) removeItem(dataTransfer, file.id);
+
+          // Send updated files
+          sendFiles(dataTransfer);
+        }
+
+        // Triggered when user uploaded a new file
+        function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
+          // FileList is immutable, so we need to create a new one
+          const dataTransfer = new DataTransfer();
+
+          // Add old images
+          if (value) addFiles(dataTransfer, value);
+
+          // Add newly uploaded images
+          addFiles(dataTransfer, e.target.files!);
+
+          // Send updated files
+          sendFiles(dataTransfer);
         }
 
         return (
@@ -71,19 +104,7 @@ export const FileField = () => {
                         <Button
                           size="icon"
                           className="bg-transparent hover:bg-transparent h-fit w-fit text-primary focus:ring-indigo-600 focus-visible:ring-indigo-600 "
-                          onClick={() => {
-                            // Triggered when user delete a new file
-
-                            // FileList is immutable, so we need to create a new one
-                            const dataTransfer = new DataTransfer();
-
-                            // Add already existing images
-                            if (value) addFiles(dataTransfer, value);
-
-                            if (f.id) removeItem(dataTransfer, f.id);
-
-                            sendFiles(dataTransfer);
-                          }}
+                          onClick={() => handleFileRemove(f)}
                         >
                           <X />
                         </Button>
@@ -102,19 +123,7 @@ export const FileField = () => {
                   type="file"
                   multiple
                   accept={FILE_TYPES.join(",")}
-                  onChange={(e) => {
-                    // Triggered when user uploaded a new file
-
-                    // FileList is immutable, so we need to create a new one
-                    const dataTransfer = new DataTransfer();
-
-                    // Add old images
-                    if (value) addFiles(dataTransfer, value);
-                    // Add newly uploaded images
-                    addFiles(dataTransfer, e.target.files!);
-
-                    sendFiles(dataTransfer);
-                  }}
+                  onChange={(e) => handleFileChange(e)}
                 />
               </FormControl>
 
