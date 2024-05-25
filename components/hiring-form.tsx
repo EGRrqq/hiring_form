@@ -34,7 +34,7 @@ import { Input } from "@/components/ui/input";
 import { parsePhoneNumber } from "awesome-phonenumber";
 import { Checkbox } from "./ui/checkbox";
 import { Badge } from "./ui/badge";
-import { FileTextIcon, X } from "lucide-react";
+import { FileTextIcon, PlusIcon, X } from "lucide-react";
 
 const SKILL_VALUES = ["Junior", "Middle", "Senior", "Lead", "CTO"] as const;
 const FILE_TYPES = [
@@ -222,7 +222,10 @@ export function HiringForm() {
             <FormField
               control={form.control}
               name="resume"
-              render={({ field: { value, onChange, ...fieldProps } }) => {
+              render={({
+                field: { value, onChange, ...fieldProps },
+                fieldState: { error },
+              }) => {
                 interface IFileWithId extends File {
                   id: string;
                 }
@@ -305,6 +308,7 @@ export function HiringForm() {
                     <FormControl>
                       <Input
                         {...fieldProps}
+                        className="sr-only"
                         type="file"
                         multiple
                         accept={FILE_TYPES.join(",")}
@@ -323,7 +327,17 @@ export function HiringForm() {
                         }}
                       />
                     </FormControl>
-                    <FormMessage />
+
+                    <div className="flex flex-col gap-1">
+                      <FormLabel
+                        className={`cursor-pointer rounded-3xl border-2 border-dashed flex justify-center items-center p-8 text-gray-400
+                    ${error ? "border-destructive" : "gray-400"}
+                    `}
+                      >
+                        <PlusIcon size="2rem" />
+                      </FormLabel>
+                      <FormMessage />
+                    </div>
                   </FormItem>
                 );
               }}
