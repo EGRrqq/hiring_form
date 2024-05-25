@@ -220,57 +220,104 @@ export function HiringForm() {
             <FormField
               control={form.control}
               name="resume"
-              render={({ field: { value, onChange, ...fieldProps } }) => (
-                <FormItem className="flex flex-wrap gap-4 [&>*]:flex-1 [&>*]:basis-[48%]">
-                  <div className="flex flex-col gap-3.5 mt-2">
-                    <FormLabel className="text-primary">
-                      Dokument hochladen
-                    </FormLabel>
-                    <FormDescription>
-                      Klicken Sie auf die Schaltfläche oder ziehen Sie ein
-                      Dokument im PDF-, DOCX-, PNG.
-                    </FormDescription>
+              render={({ field: { value, onChange, ...fieldProps } }) => {
+                interface IFileWithId extends File {
+                  id: string;
+                }
 
-                    <ul>
-                      {value &&
-                        Array.from(value).map((f) => (
-                          <li key={uuidv4()}>{f.name}</li>
-                        ))}
-                    </ul>
-                  </div>
+                // Add image file with id to FileList
+                function addItems(
+                  dataTransfer: DataTransfer,
+                  image: IFileWithId
+                ) {
+                  image.id = uuidv4();
+                  dataTransfer.items.add(image);
+                }
 
-                  <FormControl>
-                    <Input
-                      {...fieldProps}
-                      type="file"
-                      multiple
-                      accept={FILE_TYPES.join(",")}
-                      onChange={(event) => {
-                        // Triggered when user uploaded a new file
-                        // FileList is immutable, so we need to create a new one
-                        const dataTransfer = new DataTransfer();
+                function removeItem(dataTransfer: DataTransfer, id: string) {
+                  const files = dataTransfer.files;
+                  const filesArr = Array.from(files);
+                  const fileIndex = filesArr.findIndex((i) => i.id === id);
 
-                        // Add old images
-                        if (value) {
-                          Array.from(value).forEach((image) =>
-                            dataTransfer.items.add(image)
-                          );
-                        }
+                  dataTransfer.items.remove(fileIndex);
+                }
 
-                        // Add newly uploaded images
-                        Array.from(event.target.files!).forEach((image) =>
-                          dataTransfer.items.add(image)
-                        );
+                function addFiles(dataTransfer: DataTransfer, files: FileList) {
+                  Array.from(files).forEach((image) =>
+                    addItems(dataTransfer, image)
+                  );
+                }
 
-                        // Validate and update uploaded file
-                        const newFiles = dataTransfer.files;
-                        onChange(newFiles);
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+                // Validate and update uploaded file
+                function sendFiles(dataTransfer: DataTransfer) {
+                  const newFiles = dataTransfer.files;
+                  onChange(newFiles);
+                }
+
+                return (
+                  <FormItem className="flex flex-wrap gap-4 [&>*]:flex-1 [&>*]:basis-[48%]">
+                    <div className="flex flex-col gap-3.5 mt-2">
+                      <FormLabel className="text-primary">
+                        Dokument hochladen
+                      </FormLabel>
+                      <FormDescription>
+                        Klicken Sie auf die Schaltfläche oder ziehen Sie ein
+                        Dokument im PDF-, DOCX-, PNG.
+                      </FormDescription>
+
+                      <ul>
+                        {value &&
+                          Array.from(value).map((f) => (
+                            <div className="flex" key={f.id}>
+                              <li>{f.name}</li>
+                              <Button
+                                size="icon"
+                                onClick={() => {
+                                  // Triggered when user delete a new file
+
+                                  // FileList is immutable, so we need to create a new one
+                                  const dataTransfer = new DataTransfer();
+
+                                  // Add already existing images
+                                  if (value) addFiles(dataTransfer, value);
+
+                                  removeItem(dataTransfer, f.id);
+
+                                  sendFiles(dataTransfer);
+                                }}
+                              >
+                                X
+                              </Button>
+                            </div>
+                          ))}
+                      </ul>
+                    </div>
+
+                    <FormControl>
+                      <Input
+                        {...fieldProps}
+                        type="file"
+                        multiple
+                        accept={FILE_TYPES.join(",")}
+                        onChange={(e) => {
+                          // Triggered when user uploaded a new file
+
+                          // FileList is immutable, so we need to create a new one
+                          const dataTransfer = new DataTransfer();
+
+                          // Add old images
+                          if (value) addFiles(dataTransfer, value);
+                          // Add newly uploaded images
+                          addFiles(dataTransfer, e.target.files!);
+
+                          sendFiles(dataTransfer);
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
 
             <FormField
