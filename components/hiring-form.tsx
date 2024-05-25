@@ -33,6 +33,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { parsePhoneNumber } from "awesome-phonenumber";
 import { Checkbox } from "./ui/checkbox";
+import { Badge } from "./ui/badge";
+import { FileTextIcon, X } from "lucide-react";
 
 const SKILL_VALUES = ["Junior", "Middle", "Senior", "Lead", "CTO"] as const;
 const FILE_TYPES = [
@@ -265,30 +267,37 @@ export function HiringForm() {
                         Dokument im PDF-, DOCX-, PNG.
                       </FormDescription>
 
-                      <ul>
+                      <ul className="flex flex-col gap-2">
                         {value &&
                           Array.from(value).map((f) => (
-                            <div className="flex" key={f.id}>
-                              <li>{f.name}</li>
-                              <Button
-                                size="icon"
-                                onClick={() => {
-                                  // Triggered when user delete a new file
-
-                                  // FileList is immutable, so we need to create a new one
-                                  const dataTransfer = new DataTransfer();
-
-                                  // Add already existing images
-                                  if (value) addFiles(dataTransfer, value);
-
-                                  removeItem(dataTransfer, f.id);
-
-                                  sendFiles(dataTransfer);
-                                }}
+                            <li className="list-none" key={f.id}>
+                              <Badge
+                                variant="secondary"
+                                className="flex gap-2 p-1 justify-center items-center w-fit h-fit bg-gray-100"
                               >
-                                X
-                              </Button>
-                            </div>
+                                <FileTextIcon />
+                                <p>{f.name}</p>
+                                <Button
+                                  size="icon"
+                                  className="bg-transparent hover:bg-transparent h-fit w-fit text-primary"
+                                  onClick={() => {
+                                    // Triggered when user delete a new file
+
+                                    // FileList is immutable, so we need to create a new one
+                                    const dataTransfer = new DataTransfer();
+
+                                    // Add already existing images
+                                    if (value) addFiles(dataTransfer, value);
+
+                                    removeItem(dataTransfer, f.id);
+
+                                    sendFiles(dataTransfer);
+                                  }}
+                                >
+                                  <X />
+                                </Button>
+                              </Badge>
+                            </li>
                           ))}
                       </ul>
                     </div>
